@@ -3,7 +3,12 @@ module Api
     class PostsContoroller < ApplicatioonContoroller
       def index
         posts = Post.order(created_at: :desc)
-        render json: { statusL 'SICCESS', message: 'loaded posts', data: posts}
+        render json: { statusL 'SUCCESS', message: 'loaded posts', data: posts}
+      end
+
+      def show
+        post = Post.find(params[:id])
+        render json: { status: 'SUCCESS', message: 'loaded the post', data: post}
       end
     end
   end
