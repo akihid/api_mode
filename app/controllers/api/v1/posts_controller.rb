@@ -10,6 +10,21 @@ module Api
         post = Post.find(params[:id])
         render json: { status: 'SUCCESS', message: 'loaded the post', data: post}
       end
+
+      def create
+        post = Post.new(post_params)
+        if post.save
+          render json: { status: 'SUCCESS', message: 'loaded the post', data: post}
+        else
+          render json: { status: 'ERROR', message: 'post not saved', data: post.errors}
+        end
+      end
+
+      private
+
+      def post_params
+        params.require(:post).permit(:title)
+      end
     end
   end
 end
