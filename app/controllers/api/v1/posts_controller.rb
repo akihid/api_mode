@@ -14,10 +14,16 @@ module Api
       def create
         post = Post.new(post_params)
         if post.save
-          render json: { status: 'SUCCESS', message: 'loaded the post', data: post}
+          render json: { status: 'SUCCESS', message: 'created the post', data: post}
         else
           render json: { status: 'ERROR', message: 'post not saved', data: post.errors}
         end
+      end
+
+      def destroy
+        post = Post.find(params[:id])
+        post.destroy
+        render json: { status: 'SUCCESS', message: 'deleted the post', data: post }
       end
 
       private
