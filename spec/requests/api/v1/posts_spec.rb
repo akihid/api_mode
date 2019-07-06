@@ -13,4 +13,17 @@ describe 'PostAPI' do
     # データが正しい
     expect(json['data'].length).to eq(5)
   end
+
+  it '特定のpostを取得する' do
+    post = FactoryBot.create(:post, title: 'テスト用')
+
+    get "/api/v1/posts/#{post.id}"
+    json = JSON.parse(response.body)
+
+    # リクエスト成功
+    expect(response.status).to eq(200)
+
+    # 特定のポスト取得
+    expect(json['data']['title']).to eq(post.title)
+  end
 end
