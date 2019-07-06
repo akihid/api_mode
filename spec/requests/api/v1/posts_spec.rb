@@ -37,4 +37,16 @@ describe 'PostAPI' do
     # リクエスト成功
     expect(response.status).to eq(200)
   end
+
+  it 'postの編集' do
+    post =  FactoryBot.create(:post, title: '更新前')
+    put "/api/v1/posts/#{post.id}", params: { post: {title: '更新後'} }
+    json = JSON.parse(response.body)
+
+    # リクエスト成功
+    expect(response.status).to eq(200)
+
+    #データ更新確認
+    expect(json['data']['title']).to eq('更新後')
+  end
 end
