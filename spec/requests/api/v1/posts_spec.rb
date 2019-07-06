@@ -53,4 +53,20 @@ describe 'PostAPI' do
     #データ更新確認
     expect(json['data']['title']).to eq('更新後')
   end
+
+  it 'postの削除' do
+    post = FactoryBot.create(:post)
+
+    delete "/api/v1/posts/#{post.id}"
+    json = JSON.parse(response.body)
+
+    # リクエスト成功
+    expect(response.status).to eq(200)
+
+    # 削除確認
+    expect(Post.count).to eq(0)
+
+    # こっちのほうがいいかも（まとめてやる）。データが削除されている事を確認
+    # expect { delete "/api/v1/posts/#{post.id}" }.to change(Post, :count).by(-1)
+  end
 end
