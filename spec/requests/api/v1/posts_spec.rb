@@ -29,13 +29,17 @@ describe 'PostAPI' do
 
   it '新しいpostを作成する' do
     valid_params = { title: '新しいタイトル'}
+    post '/api/v1/posts', params: { post: valid_params}
+    json = JSON.parse(response.body)
 
     # データ作成確認( change.byは値の増減を、相対値で検証する。)
-    expect { post '/api/v1/posts', params: { post: valid_params} }.to change{Post.count}.by(1)
     # expect { post '/api/v1/posts', params: { post: valid_params } }.to change(Post, :count).by(+1)
 
     # リクエスト成功
     expect(response.status).to eq(200)
+
+    # データ作成確認
+    expect(json['data']['title']).to eq('新しいタイトル')
   end
 
   it 'postの編集' do
