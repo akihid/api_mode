@@ -82,4 +82,15 @@ describe 'PostAPI(異常系)' do
     # エラーメッセージ確認
     expect(json['message']).to eq('post not saved')
   end
+
+  it 'post更新時エラー' do
+    post =  FactoryBot.create(:post, title: '更新前')
+    put "/api/v1/posts/#{post.id}", params: { post: {title: ''} }
+    json = JSON.parse(response.body)
+
+    # リクエスト成功
+    expect(response.status).to eq(200)
+    # エラーメッセージ確認
+    expect(json['message']).to eq('post not saved')
+  end
 end
