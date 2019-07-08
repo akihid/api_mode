@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'PostAPI' do
+describe 'PostAPI(正常系)' do
   it '全てのポストを取得する' do
     FactoryBot.create_list(:post, 5)
 
@@ -68,5 +68,18 @@ describe 'PostAPI' do
 
     # こっちのほうがいいかも（まとめてやる）。データが削除されている事を確認
     # expect { delete "/api/v1/posts/#{post.id}" }.to change(Post, :count).by(-1)
+  end
+end
+
+describe 'PostAPI(異常系)' do
+  it 'post作成時エラー' do
+    valid_params = {title_xxx: 'error' }
+    post '/api/v1/posts', params: { post: valid_params}
+    json = JSON.parse(response.body)
+
+    # リクエスト成功
+    expect(response.status).to eq(200)
+    # エラーメッセージ確認
+    expect(json['message']).to eq('post not saved')
   end
 end
